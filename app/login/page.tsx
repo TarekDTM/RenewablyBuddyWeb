@@ -31,7 +31,7 @@ export default function Home() {
                                 <Input placeholder="Email" name="Email" />
                                 <PasswordInput placeholder="Password" value={password} name="Password" onChange={(e) => setPassword(e.target.value)} />
                                 <ButtonGroup>
-                                    <Button onClick={() => submit()} size={"xl"} variant={"solid"} colorPalette={"red"} >Login</Button>
+                                    <Button disabled={password.length > 0 ? false: true} onClick={() => submit()} size={"xl"} variant={"solid"} colorPalette={"red"} >Login</Button>
                                 </ButtonGroup>
                             </Stack>
                         </form>

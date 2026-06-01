@@ -15,15 +15,12 @@ export default function Home() {
             <Flex height={"full"} justify={"space-between"}>
         <Container  className="bg-red-900" >
                 <div>
-                    <h1>LOGIN</h1>
+                    <h1>Load</h1>
                 </div>
         </Container>
                <Container className="bg-black" >
                 <div  >
-                    <h1>LOGIN</h1>
-                    <Input name="Email"  />
-                    <PasswordInput value={password}  name="Password"  onChange={(e) => setPassword(e.target.value)}/>
-                    <PasswordStrengthMeter value={password} />
+                    <h1>Total Load</h1>
                 </div>
         </Container>
             </Flex>

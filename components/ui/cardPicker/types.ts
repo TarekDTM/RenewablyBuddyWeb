@@ -1,13 +1,16 @@
-export type CardProps = {
+export interface CardProps  {
+    
     imageSrc: string,
     title: string,
     type: string,
     description: string,
-    onClick: () => void,
+    active?: boolean,
+    onclick? : () => void
+
 }
 
 export type CardPickerProps = {
-    activeCard: number,
-    cards: Omit<CardProps,'onClick'>[]
+    activeCard?: number,
+    cards: CardProps[]
     onCardSelect: (index: number) => void
 }
