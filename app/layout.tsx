@@ -29,7 +29,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className=" h-screen w-screen flex flex-col">
         <Provider defaultTheme="light">
           {children}
         </Provider>
