@@ -3,13 +3,22 @@ import Image from "next/image";
 import { Box, Button, ButtonGroup, Center, Container, Flex, HStack, Input, Stack, Text } from "@chakra-ui/react"
 
 import { PasswordInput, } from "../../components/ui/password-input";
-import { useState, } from "react";
+import { useEffect, useState, } from "react";
 import { useRouter } from "next/navigation";
 import CardPicker from "../../components/ui/cardPicker";
 import { CardProps } from "../../components/ui/cardPicker/types";
+import { Location } from "../../helpers/globalTypes/types";
 
 export default function Home() {
     const [selectedCard, setSelectedCard] = useState<number>()
+    const [error, setError] = useState<string>()
+    const [location, setLocation] = useState<Location>()
+    useEffect(() => {
+        console.log(location)
+
+
+    }, [location])
+
 
     const handleSelectCard = (id: number) => {
 
@@ -34,6 +43,24 @@ export default function Home() {
     const navigateToLoadCalculator = () => {
         router.push('loadCalculator')
     }
+
+    const askForLocationPermisson = () => {
+        if (!navigator.geolocation) {
+            setError("Geolocation is no supported or permission denied")
+            return
+        }
+        navigator.geolocation.getCurrentPosition((p) => {
+            console.log(p);
+            setLocation({
+                lat: p.coords.latitude,
+                lng: p.coords.longitude,
+            })
+        }, (err) => setError(err.message), {
+            enableHighAccuracy: true,
+            timeout: 10000,
+        })
+    }
+
 
     return (
         <Box height={"vh"}>

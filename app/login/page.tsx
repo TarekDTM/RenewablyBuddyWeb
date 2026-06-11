@@ -68,7 +68,8 @@ export default function Home() {
                     </Stack>
                 </form>
                 <Box className="self-center">
-                    <Text>{`Don't have an account? Create one free`}</Text>
+                    <Text>{`Don't have an account? `} 
+                        <Text as={'span'} className="hover:underline cursor-pointer">Create one free</Text></Text>
                 </Box>
             </Container>
             <Container bgImage={'url(https://picsum.photos/id/100/200/300)'} bgRepeat={'no-repeat'} backgroundSize={'cover'} width={"45%"} className=" bg-['url(https://picsum.photos/id/100/200/300)']" >
