@@ -1,8 +1,7 @@
 
 import React from 'react'
-interface LoadCalculatorProps {
+import { LoadCalculatorProps } from './types'
 
-}
 export default function LoadCalculator(props: LoadCalculatorProps) {
 
 
@@ -10,6 +9,7 @@ export default function LoadCalculator(props: LoadCalculatorProps) {
 
   return (
     <div>
+      <Slider value={[props.powerBill ? props.powerBill :0]} onValueChange={(v) => props.setPowerBill(v)} />
 
     </div>
   )

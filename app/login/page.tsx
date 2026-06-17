@@ -62,13 +62,13 @@ export default function Home() {
                             <Separator flex="1" />
                         </HStack>
                         <Box gapX={"2%"} className="w-full flex justify-between">
-                            <Button rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => submit()} size={"lg"}  colorPalette={"red"} >Google</Button>
-                            <Button rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => submit()} size={"lg"}  colorPalette={"white"} >Apple</Button>
+                            <Button rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => submit()} size={"lg"} colorPalette={"red"} >Google</Button>
+                            <Button rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => submit()} size={"lg"} colorPalette={"white"} >Apple</Button>
                         </Box>
                     </Stack>
                 </form>
                 <Box className="self-center">
-                    <Text>{`Don't have an account? `} 
+                    <Text>{`Don't have an account? `}
                         <Text as={'span'} className="hover:underline cursor-pointer">Create one free</Text></Text>
                 </Box>
             </Container>

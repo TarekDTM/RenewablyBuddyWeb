@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import { Box, Button, ButtonGroup, Center, Container, Flex, HStack, Input, Stack, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, Center, Container, Flex, HStack, Input, SliderValueChangeDetails, Stack, Text } from "@chakra-ui/react"
 
 import { PasswordInput, } from "../../components/ui/password-input";
 import { useEffect, useState, } from "react";
@@ -8,16 +8,15 @@ import { useRouter } from "next/navigation";
 import CardPicker from "../../components/ui/cardPicker";
 import { CardProps } from "../../components/ui/cardPicker/types";
 import { Location } from "../../helpers/globalTypes/types";
+import LoadCalculator from "../../components/ui/loadCalculator";
 
 export default function Home() {
     const [selectedCard, setSelectedCard] = useState<number>()
+    const [currentStep, setCurrentStep] = useState<number>(1)
+    const [powerBill, setPowerBill] = useState<ValueChangeDetails>()
     const [error, setError] = useState<string>()
     const [location, setLocation] = useState<Location>()
-    useEffect(() => {
-        console.log(location)
 
-
-    }, [location])
 
 
     const handleSelectCard = (id: number) => {
@@ -66,16 +65,43 @@ export default function Home() {
         <Box height={"vh"}>
 
             <Flex height={"full"} justify={"space-between"}>
-                <Container className="bg-white" >
-                    <Center height={"full"}>
-                        <Flex textAlign={'center'} width={'1/2'} direction={'column'} justifyContent={'space-between'} height={'1/2'} >
-                            <Text >OnBoarding</Text>
-                            <Text> What type of location do you have ?</Text>
-                            <form className="w-full">
-                                <CardPicker cards={cards} onCardSelect={handleSelectCard} activeCard={selectedCard} />
-                            </form>
-                            <Button onClick={navigateToLoadCalculator} >Next</Button>
-                        </Flex>
+                <Container className="bg-white " >
+
+                    <Center height={"full"} display={"flex"} flexDirection={"column"} gapY={8} >
+                        {currentStep === 1 &&
+                            <Flex textAlign={'center'}  width={'1/2'} direction={'column'} height={'auto'} gapY={8} >
+                                <div className="flex flex-col items-start">
+                                    <Text >Location</Text>
+                                    <Text fontSize={'2xl'}>{` What type of location do you have ?`}</Text>
+                                </div>
+                                <form className="w-full">
+                                    <CardPicker cards={cards} onCardSelect={handleSelectCard} activeCard={selectedCard} />
+                                </form>
+                            </Flex>
+                        }
+
+                        {currentStep === 2 &&
+                            <Flex textAlign={'center'}  width={'1/2'} direction={'column'} height={'auto'} gapY={"8"} >
+                                <div className="flex flex-col items-start">
+                                    <Text >Energy Usage
+                                    </Text>
+                                    <Text fontSize={'2xl'}>{`What's your average monthly electricity bill?`}</Text>
+                                    <Text fontSize={'large'}>{`This helps us size the perfect solar system for your home.`}</Text>
+                                </div>
+                                <div>
+                                    <Text fontSize={'2xl'}>{powerBill}</Text>
+
+                                </div>
+                                <form className="w-full">
+                                    <LoadCalculator setPowerBill={() => setPowerBill} powerBill={powerBill} />
+                                </form>
+                            </Flex>
+                        }
+                        <div className="flex flex-row gap-x-8">
+                            <Button disabled={currentStep === 1 ? true : false} onClick={() => setCurrentStep((v) => v - 1)} >Back</Button>
+                            <Button onClick={() => setCurrentStep((v) => v + 1)} >Next</Button>
+                        </div>
+
                     </Center>
                 </Container>
 
