@@ -1,22 +1,15 @@
-"use client"
 import Image from "next/image";
-import { Box, Button, ButtonGroup, Center, Container, Field, Flex, HStack, Input, Separator, Stack, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, Container, Field, HStack, Input, Separator, Stack, Text } from "@chakra-ui/react"
 
 import { PasswordInput, } from "../../components/ui/password-input";
-import { useState, } from "react";
-import { useRouter } from "next/navigation";
+import { signup } from "../actions/auth/auth";
+import { useActionState } from "react";
 
-export default function Home() {
-    const [password, setPassword] = useState<string>("")
+export default function Register() {
+    const [state, action, pending] = useActionState(signup, undefined)
 
-    const router = useRouter()
 
-    function submit() {
-        if (password.length === 0) {
-            return
-        }
-        router.push('/onboarding')
-    }
+
     return (
         <Box className="h-full w-full flex flex-row">
             <Container width={"55%"} className="bg-white flex flex-col" paddingY={8}>
@@ -40,27 +33,41 @@ export default function Home() {
                     </Box>
 
                 </Box>
-                <form>
+                <form action={action}>
                     <Stack gapY={"8"} marginBottom={8}>
                         <Field.Root>
                             <Field.Label>Name</Field.Label>
-                            <Input placeholder="Email" name="Email" />
+                            <Input placeholder="name" name="name" />
                         </Field.Root>
+                        {state?.errors?.name && <p>{state.errors.name}</p>}
+
                         <Field.Root>
                             <Field.Label>Email address</Field.Label>
-                            <Input placeholder="Email" name="Email" />
+                            <Input placeholder="email" name="email" />
                         </Field.Root>
-
+                        {state?.errors?.email && <p>{state.errors.email}</p>}
                         <Field.Root >
                             <Field.Label>Password</Field.Label>
-                            <PasswordInput placeholder="Password" value={password} name="Password" onChange={(e) => setPassword(e.target.value)} />
+                            <PasswordInput placeholder="password" name="password" />
                         </Field.Root>
+                        {state?.errors?.password && (
+                            <div>
+                                <p>Password must:</p>
+                                <ul>
+                                    {state.errors.password.map((error) => (
+                                        <li key={error}>- {error}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                         <Field.Root >
                             <Field.Label>Confirm password</Field.Label>
-                            <PasswordInput placeholder="Password" value={password} name="Password" onChange={(e) => setPassword(e.target.value)} />
+                            <PasswordInput placeholder="Confirm password" name="ConfirmPassword" />
                         </Field.Root>
+                        {state?.errors?. && <p>{state.errors.confirmPassword}</p>}
+
                         <ButtonGroup>
-                            <Button rounded={'2xl'} width={'full'} disabled={password.length > 0 ? false : true} onClick={() => submit()} size={"lg"} variant={"solid"} colorPalette={"red"} >Login</Button>
+                            <Button disabled={pending} rounded={'2xl'} width={'full'} size={"lg"} variant={"solid"} colorPalette={"red"} >Login</Button>
                         </ButtonGroup>
                         <HStack>
                             <Separator flex="1" />

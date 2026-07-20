@@ -17,16 +17,17 @@ export const SignupFormSchema = z.object({
     .trim(),
     confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Passwords does not match",
     path: ["confirmPassword"], // This attaches the error specifically to the confirmPassword field
   });
  
 export type FormState =
-  | {
+   {
       errors?: {
         name?: string[]
         email?: string[]
         password?: string[]
+        confirmPassowrd: string
       }
       message?: string
     }
