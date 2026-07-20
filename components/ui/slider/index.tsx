@@ -1,18 +1,22 @@
-import { HStack, Slider } from "@chakra-ui/react"
+import { HStack, Slider, SliderValueChangeDetails } from "@chakra-ui/react"
 
+interface sliderProps {
+  value: number[]
+  onValueChange: (v: SliderValueChangeDetails) => void
 
-const CustomSlider = () => {
+}
+
+export default function CustomSlider(props: sliderProps) {
   return (
-    <Slider.Root maxW="sm" size="sm" defaultValue={[40]}>
-      <HStack justify="space-between">
-        <Slider.Label>Volume</Slider.Label>
-        <Slider.ValueText />
-      </HStack>
+    <Slider.Root maxW="full" size="lg" value={props.value} onValueChange={props.onValueChange} defaultValue={[40]}>
+     
       <Slider.Control>
-        <Slider.Track>
+        <Slider.Track fill={"red"}>
           <Slider.Range />
+          <Slider.Marker value={props.value[0]} />
         </Slider.Track>
         <Slider.Thumbs rounded="l1" />
+
       </Slider.Control>
     </Slider.Root>
   )

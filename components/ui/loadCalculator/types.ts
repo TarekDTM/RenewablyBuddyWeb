@@ -1,9 +1,8 @@
 import { SliderValueChangeDetails } from "@chakra-ui/react";
 
 export interface LoadCalculatorProps {
-  powerBill? : number,
-  setPowerBill : (v: ValuechangeDetails) => void
-
+  powerBill? : number[],
+  onValueChange: (v: SliderValueChangeDetails) => void
 
 }
 

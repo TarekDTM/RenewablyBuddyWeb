@@ -43,13 +43,20 @@ export default function Home() {
                 <form>
                     <Stack gapY={"8"} marginBottom={8}>
                         <Field.Root>
-                            <Field.Label>Email address</Field.Label>
-                            <Field.Label>   </Field.Label>
+                            <Field.Label>Name</Field.Label>
                             <Input placeholder="Email" name="Email" />
                         </Field.Root>
-                        <Field.Root  >
+                        <Field.Root>
+                            <Field.Label>Email address</Field.Label>
+                            <Input placeholder="Email" name="Email" />
+                        </Field.Root>
 
+                        <Field.Root >
                             <Field.Label>Password</Field.Label>
+                            <PasswordInput placeholder="Password" value={password} name="Password" onChange={(e) => setPassword(e.target.value)} />
+                        </Field.Root>
+                        <Field.Root >
+                            <Field.Label>Confirm password</Field.Label>
                             <PasswordInput placeholder="Password" value={password} name="Password" onChange={(e) => setPassword(e.target.value)} />
                         </Field.Root>
                         <ButtonGroup>
@@ -62,8 +69,8 @@ export default function Home() {
                             <Separator flex="1" />
                         </HStack>
                         <Box gapX={"2%"} className="w-full flex justify-between">
-                            <Button rounded={'2xl'} variant={"solid"} width={"49%"} onClick={ () => submit()} size={"lg"} colorPalette={"red"} >Google</Button>
-                            <Button rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => submit()} size={"lg"} colorPalette={"white"} >Apple</Button>
+                            <Button type="submit" rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => submit()} size={"lg"} colorPalette={"red"} >Google</Button>
+                            <Button type="submit" rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => submit()} size={"lg"} colorPalette={"white"} >Apple</Button>
                         </Box>
                     </Stack>
                 </form>

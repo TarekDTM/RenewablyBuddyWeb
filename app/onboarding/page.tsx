@@ -13,7 +13,7 @@ import LoadCalculator from "../../components/ui/loadCalculator";
 export default function Home() {
     const [selectedCard, setSelectedCard] = useState<number>()
     const [currentStep, setCurrentStep] = useState<number>(1)
-    const [powerBill, setPowerBill] = useState<ValueChangeDetails>()
+    const [powerBill, setPowerBill] = useState<number[]>([])
     const [error, setError] = useState<string>()
     const [location, setLocation] = useState<Location>()
 
@@ -22,7 +22,6 @@ export default function Home() {
     const handleSelectCard = (id: number) => {
 
         setSelectedCard(id)
-        console.log("🚀 ~ handleSelectCard ~ id:", selectedCard)
     }
     const cards = [
         {
@@ -88,12 +87,14 @@ export default function Home() {
                                     <Text fontSize={'2xl'}>{`What's your average monthly electricity bill?`}</Text>
                                     <Text fontSize={'large'}>{`This helps us size the perfect solar system for your home.`}</Text>
                                 </div>
-                                <div>
-                                    <Text fontSize={'2xl'}>{powerBill}</Text>
+                                <div className="flex flex-row self-center items-center">
+                                    <Text fontSize={'6xl'}>{powerBill[0] * 25 || 0 }</Text>
+                                    <Text className="self-end" fontSize={'2xl'}>/mo</Text>
+                                    
 
                                 </div>
                                 <form className="w-full">
-                                    <LoadCalculator setPowerBill={() => setPowerBill} powerBill={powerBill} />
+                                    <LoadCalculator powerBill={powerBill} onValueChange={(v) =>  setPowerBill(v.value)} />
                                 </form>
                             </Flex>
                         }

@@ -1,16 +1,19 @@
+
 "use client"
 import Image from "next/image";
 import { Box, Button, ButtonGroup, Center, Container, Field, Flex, HStack, Input, Separator, Stack, Text } from "@chakra-ui/react"
 
 import { PasswordInput, } from "../../components/ui/password-input";
-import { useState, } from "react";
+import { useState} from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [password, setPassword] = useState<string>("")
 
     const router = useRouter()
+const testRequest = ()=> {
 
+}
     function submit() {
         if (password.length === 0) {
             return
@@ -40,7 +43,7 @@ export default function Home() {
                     </Box>
 
                 </Box>
-                <form>
+                <form action={submit}>
                     <Stack gapY={"8"} marginBottom={8}>
                         <Field.Root>
                             <Field.Label>Email address</Field.Label>
