@@ -1,18 +1,32 @@
+"use client"
+
 import Image from "next/image";
 import { Box, Button, ButtonGroup, Container, Field, HStack, Input, Separator, Stack, Text } from "@chakra-ui/react"
 
 import { PasswordInput, } from "../../components/ui/password-input";
-import { signup } from "../actions/auth/auth";
-import { useActionState } from "react";
+import { signup } from "../../helpers/auth/auth";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { SignupForm, signupSchema } from "../../helpers/auth/schema";
+import { useYupValidationResolver } from "../../hooks/api/useYupValidation";
+import { SubmitEventHandler } from "react";
 
-export default function Register() {
-    const [state, action, pending] = useActionState(signup, undefined)
+export default function SignUp() {
+    const resolver = useYupValidationResolver(signupSchema)
+    const { register, handleSubmit } = useForm<SignupForm>({ resolver })
 
+    const handleEmailSubmit: SubmitHandler<SignupForm> = async (data) => {
+        try {
 
+            await signup(data)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
     return (
-        <Box className="h-full w-full flex flex-row">
-            <Container width={"55%"} className="bg-white flex flex-col" paddingY={8}>
+        <Box width={'svw'} margin="0" padding={'0'} className=" flex flex-row">
+            <Container width={"50%"} className="bg-white flex flex-col" margin="0" padding={'0'} paddingY={8}>
                 <Box className="flex flex-row gap-x-4" marginBottom={'10%'} >
                     <Image src="https://picsum.photos/id/100/200/300" width={8} height={8} alt="Renewable buddy logo" />
                     <Text fontSize={'lg'} fontWeight={"bold"}>
@@ -31,43 +45,32 @@ export default function Register() {
                             Get your free personalized solar plan in under 5 minutes.
                         </Text>
                     </Box>
-
+                    x
                 </Box>
-                <form action={action}>
+                <form onSubmit={handleSubmit(handleEmailSubmit)}>
                     <Stack gapY={"8"} marginBottom={8}>
                         <Field.Root>
                             <Field.Label>Name</Field.Label>
-                            <Input placeholder="name" name="name" />
+                            <Input placeholder="name"  {...register('name')} />
                         </Field.Root>
-                        {state?.errors?.name && <p>{state.errors.name}</p>}
 
                         <Field.Root>
                             <Field.Label>Email address</Field.Label>
-                            <Input placeholder="email" name="email" />
+                            <Input placeholder="email"  {...register('email')} />
                         </Field.Root>
-                        {state?.errors?.email && <p>{state.errors.email}</p>}
+
                         <Field.Root >
                             <Field.Label>Password</Field.Label>
-                            <PasswordInput placeholder="password" name="password" />
+                            <PasswordInput placeholder="password"  {...register('password')} />
                         </Field.Root>
-                        {state?.errors?.password && (
-                            <div>
-                                <p>Password must:</p>
-                                <ul>
-                                    {state.errors.password.map((error) => (
-                                        <li key={error}>- {error}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
+
                         <Field.Root >
                             <Field.Label>Confirm password</Field.Label>
-                            <PasswordInput placeholder="Confirm password" name="ConfirmPassword" />
+                            <PasswordInput placeholder="Confirm password"  {...register('confirmPassword')} />
                         </Field.Root>
-                        {state?.errors?. && <p>{state.errors.confirmPassword}</p>}
 
                         <ButtonGroup>
-                            <Button disabled={pending} rounded={'2xl'} width={'full'} size={"lg"} variant={"solid"} colorPalette={"red"} >Login</Button>
+                            <Button type="submit" rounded={'2xl'} width={'full'} size={"lg"} variant={"solid"} colorPalette={"red"} >Login</Button>
                         </ButtonGroup>
                         <HStack>
                             <Separator flex="1" />
@@ -76,8 +79,8 @@ export default function Register() {
                             <Separator flex="1" />
                         </HStack>
                         <Box gapX={"2%"} className="w-full flex justify-between">
-                            <Button type="submit" rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => submit()} size={"lg"} colorPalette={"red"} >Google</Button>
-                            <Button type="submit" rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => submit()} size={"lg"} colorPalette={"white"} >Apple</Button>
+                            <Button type="submit" rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => console.log("google")} size={"lg"} colorPalette={"red"} >Google</Button>
+                            <Button type="submit" rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => console.log("Apple")} size={"lg"} colorPalette={"white"} >Apple</Button>
                         </Box>
                     </Stack>
                 </form>
@@ -86,7 +89,7 @@ export default function Register() {
                         <Text as={'span'} className="hover:underline cursor-pointer">Create one free</Text></Text>
                 </Box>
             </Container>
-            <Container bgImage={'url(https://picsum.photos/id/100/200/300)'} bgRepeat={'no-repeat'} backgroundSize={'cover'} width={"45%"} className=" bg-['url(https://picsum.photos/id/100/200/300)']" >
+            <Container margin="0" padding={'0'} bgImage={'url(https://picsum.photos/id/100/200/300)'} bgRepeat={'no-repeat'} backgroundSize={'cover'} width={"45%"} className=" bg-['url(https://picsum.photos/id/100/200/300)']" >
             </Container>
         </Box>
     );

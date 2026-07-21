@@ -1,6 +1,6 @@
 // src/hooks/api/useUser.ts
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '../../helpers/network/client';
+import { apiClient } from '../../network/client';
 
 // Define types/interfaces for type safety
 interface UserProfile {
