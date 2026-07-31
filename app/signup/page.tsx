@@ -9,15 +9,28 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { SignupForm, signupSchema } from "../../helpers/auth/schema";
 import { useYupValidationResolver } from "../../hooks/api/useYupValidation";
 import { SubmitEventHandler } from "react";
+import { getQueryClient } from "../get-query-client";
+import { useMutation } from "@tanstack/react-query";
 
 export default function SignUp() {
+
+
     const resolver = useYupValidationResolver(signupSchema)
     const { register, handleSubmit } = useForm<SignupForm>({ resolver })
+    const mutation = useMutation({
+        mutationKey: ["User"],
+        mutationFn: async (data: SignupForm) => await signup(data)
 
+
+    })
     const handleEmailSubmit: SubmitHandler<SignupForm> = async (data) => {
+        const formattedData = {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+        }
         try {
-
-            await signup(data)
+            mutation.mutate(formattedData)
         } catch (error) {
             console.log(error)
         }
@@ -25,8 +38,8 @@ export default function SignUp() {
     }
 
     return (
-        <Box width={'svw'} margin="0" padding={'0'} className=" flex flex-row">
-            <Container width={"50%"} className="bg-white flex flex-col" margin="0" padding={'0'} paddingY={8}>
+        <Box className="h-full w-full flex flex-row">
+            <Container width={"50%"} className=" flex flex-col" margin="0" padding={'0'} paddingY={8}>
                 <Box className="flex flex-row gap-x-4" marginBottom={'10%'} >
                     <Image src="https://picsum.photos/id/100/200/300" width={8} height={8} alt="Renewable buddy logo" />
                     <Text fontSize={'lg'} fontWeight={"bold"}>
@@ -45,7 +58,6 @@ export default function SignUp() {
                             Get your free personalized solar plan in under 5 minutes.
                         </Text>
                     </Box>
-                    x
                 </Box>
                 <form onSubmit={handleSubmit(handleEmailSubmit)}>
                     <Stack gapY={"8"} marginBottom={8}>
@@ -72,6 +84,7 @@ export default function SignUp() {
                         <ButtonGroup>
                             <Button type="submit" rounded={'2xl'} width={'full'} size={"lg"} variant={"solid"} colorPalette={"red"} >Login</Button>
                         </ButtonGroup>
+                    </Stack>
                         <HStack>
                             <Separator flex="1" />
                             <Text fontSize={'sm'} fontWeight={'bold'} color={'darkgrey'} flexShrink="0">or continue with
@@ -82,14 +95,13 @@ export default function SignUp() {
                             <Button type="submit" rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => console.log("google")} size={"lg"} colorPalette={"red"} >Google</Button>
                             <Button type="submit" rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => console.log("Apple")} size={"lg"} colorPalette={"white"} >Apple</Button>
                         </Box>
-                    </Stack>
                 </form>
                 <Box className="self-center">
                     <Text>{`Don't have an account? `}
-                        <Text as={'span'} className="hover:underline cursor-pointer">Create one free</Text></Text>
+                    <Text as={'span'} className="hover:underline cursor-pointer">Create one free</Text></Text>
                 </Box>
             </Container>
-            <Container margin="0" padding={'0'} bgImage={'url(https://picsum.photos/id/100/200/300)'} bgRepeat={'no-repeat'} backgroundSize={'cover'} width={"45%"} className=" bg-['url(https://picsum.photos/id/100/200/300)']" >
+            <Container width={"50%"} margin="0" padding={'0'} bgImage={'url(https://picsum.photos/id/100/200/300)'} bgRepeat={'no-repeat'} backgroundSize={'cover'} width={"45%"} className=" bg-['url(https://picsum.photos/id/100/200/300)']" >
             </Container>
         </Box>
     );

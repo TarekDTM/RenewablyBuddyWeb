@@ -2,8 +2,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 export async function apiRequest<T>(endpoint: string, options: RequestInit ,payload?: T ): Promise<T> {
-    console.log(process.env.NEXT_PUBLIC_API_URL)
-    console.log("🚀 ~ apiRequest ~ endpoint:", endpoint,options,payload)
     const { body, headers, ...customConfig } = options;
 
     const isFormData = body instanceof FormData;
@@ -22,7 +20,6 @@ export async function apiRequest<T>(endpoint: string, options: RequestInit ,payl
         headers: configHeaders,
         body: formattedBody,
     });
-    console.log("🚀 ~ apiRequest ~ response:", response)
 
     if (response.status === 401) {
         throw new Error('Unauthorized');

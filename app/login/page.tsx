@@ -21,7 +21,7 @@ const testRequest = ()=> {
         router.push('/onboarding')
     }
     return (
-        <Box className="h-full w-full flex flex-row">
+        <div className="h-full w-full flex flex-row">
             <Container width={"55%"} className="bg-white flex flex-col" paddingY={8}>
                 <Box className="flex flex-row gap-x-4" marginBottom={'10%'} >
                     <Image src="https://picsum.photos/id/100/200/300" width={8} height={8} alt="Renewable buddy logo" />
@@ -58,6 +58,8 @@ const testRequest = ()=> {
                         <ButtonGroup>
                             <Button rounded={'2xl'} width={'full'} disabled={password.length > 0 ? false : true} onClick={() => submit()} size={"lg"} variant={"solid"} colorPalette={"red"} >Login</Button>
                         </ButtonGroup>
+                    </Stack>
+                </form>
                         <HStack>
                             <Separator flex="1" />
                             <Text fontSize={'sm'} fontWeight={'bold'} color={'darkgrey'} flexShrink="0">or continue with
@@ -68,8 +70,6 @@ const testRequest = ()=> {
                             <Button rounded={'2xl'} variant={"solid"} width={"49%"} onClick={() => submit()} size={"lg"} colorPalette={"red"} >Google</Button>
                             <Button rounded={'2xl'} width={"49%"} variant={"solid"} onClick={() => submit()} size={"lg"} colorPalette={"white"} >Apple</Button>
                         </Box>
-                    </Stack>
-                </form>
                 <Box className="self-center">
                     <Text>{`Don't have an account? `}
                         <Text as={'span'} className="hover:underline cursor-pointer">Create one free</Text></Text>
@@ -77,6 +77,6 @@ const testRequest = ()=> {
             </Container>
             <Container bgImage={'url(https://picsum.photos/id/100/200/300)'} bgRepeat={'no-repeat'} backgroundSize={'cover'} width={"45%"} className=" bg-['url(https://picsum.photos/id/100/200/300)']" >
             </Container>
-        </Box>
+        </div>
     );
 }
