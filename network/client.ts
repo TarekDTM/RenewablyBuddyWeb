@@ -1,19 +1,23 @@
-// src/lib/api-client.ts
+import { APIErrorResponse, APISuccessResponse } from './reponses';
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
-export async function apiRequest<T>(endpoint: string, options: RequestInit ,payload?: T ): Promise<T> {
-    const { body, headers, ...customConfig } = options;
 
+
+export async function apiRequest<T>(
+    endpoint: string,
+    options: RequestInit,
+    payload?: T
+): Promise<APISuccessResponse<T> | APIErrorResponse<T>> {
+    const { body, headers, ...customConfig } = options;
     const isFormData = body instanceof FormData;
 
     const configHeaders: HeadersInit = {
-        // Only set Content-Type if it's NOT FormData (browser handles FormData headers)
         ...(!isFormData && { 'Content-Type': 'application/json' }),
         ...headers,
     };
 
-    const formattedBody = payload ? JSON.stringify(payload): body;
-
+    const formattedBody = payload ? JSON.stringify(payload) : body;
 
     const response = await fetch(`${BASE_URL}${endpoint}`, {
         ...customConfig,
@@ -26,14 +30,13 @@ export async function apiRequest<T>(endpoint: string, options: RequestInit ,payl
     }
 
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        const errorData: APIErrorResponse<T> = await response.json()
+        return errorData
     }
 
-    // Handle 204 No Content or empty responses safely
-    if (response.status === 204) {
-        return {} as T;
-    }
 
-    return response.json();
+    // Handle both string and object errors
+    return await response.json() as APISuccessResponse<T>;
+
+
 }
