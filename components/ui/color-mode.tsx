@@ -2,16 +2,53 @@
 
 import type { IconButtonProps, SpanProps } from "@chakra-ui/react"
 import { ClientOnly, IconButton, Skeleton, Span } from "@chakra-ui/react"
-import { ThemeProvider, useTheme } from "next-themes"
-import type { ThemeProviderProps } from "next-themes"
 import * as React from "react"
 import { LuMoon, LuSun } from "react-icons/lu"
 
-export interface ColorModeProviderProps extends ThemeProviderProps {}
+export interface ColorModeProviderProps extends React.PropsWithChildren {}
+
+const ColorModeContext = React.createContext<UseColorModeReturn>({
+  colorMode: "light",
+  setColorMode: () => undefined,
+  toggleColorMode: () => undefined,
+})
 
 export function ColorModeProvider(props: ColorModeProviderProps) {
+  const [colorMode, setColorModeState] = React.useState<ColorMode>("light")
+
+  const setColorMode = React.useCallback((mode: ColorMode) => {
+    setColorModeState(mode)
+    document.documentElement.classList.toggle("dark", mode === "dark")
+    document.documentElement.classList.toggle("light", mode === "light")
+    window.localStorage.setItem("renewablebuddy-color-mode", mode)
+  }, [])
+
+  React.useEffect(() => {
+    const savedMode = window.localStorage.getItem("renewablebuddy-color-mode")
+    const initialMode: ColorMode = savedMode === "dark" || savedMode === "light"
+      ? savedMode
+      : window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+
+    document.documentElement.classList.toggle("dark", initialMode === "dark")
+    document.documentElement.classList.toggle("light", initialMode === "light")
+    setColorModeState(initialMode)
+  }, [])
+
+  const value = React.useMemo<UseColorModeReturn>(
+    () => ({
+      colorMode,
+      setColorMode,
+      toggleColorMode: () => setColorMode(colorMode === "dark" ? "light" : "dark"),
+    }),
+    [colorMode, setColorMode],
+  )
+
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
+    <ColorModeContext.Provider value={value}>
+      {props.children}
+    </ColorModeContext.Provider>
   )
 }
 
@@ -24,16 +61,7 @@ export interface UseColorModeReturn {
 }
 
 export function useColorMode(): UseColorModeReturn {
-  const { resolvedTheme, setTheme, forcedTheme } = useTheme()
-  const colorMode = forcedTheme || resolvedTheme
-  const toggleColorMode = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark")
-  }
-  return {
-    colorMode: colorMode as ColorMode,
-    setColorMode: setTheme,
-    toggleColorMode,
-  }
+  return React.useContext(ColorModeContext)
 }
 
 export function useColorModeValue<T>(light: T, dark: T) {
@@ -79,10 +107,10 @@ export const LightMode = React.forwardRef<HTMLSpanElement, SpanProps>(
   function LightMode(props, ref) {
     return (
       <Span
-        color="fg"
+        color="bg"
         display="contents"
         className="chakra-theme light"
-        colorPalette="gray"
+        colorPalette="white"
         colorScheme="light"
         ref={ref}
         {...props}
